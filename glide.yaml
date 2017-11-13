@@ -1,0 +1,4 @@
+package: github.com/euclid1990/go-bigquery
+import:
+- package: github.com/codegangsta/cli
+  version: v1.20.0
