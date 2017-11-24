@@ -10,6 +10,8 @@ Quickstart using Go-lang with Google Cloud Platform to select/insert/update data
 $ cp .env.example .env
 ```
 
+- Open `.env` file and put your GCP Project Id: `GCP_PROJECT_ID`
+
 - Create credential (*Service account key*) at `https://console.cloud.google.com/apis/credentials?project=[Project_ID]` and put in inside root of `go-bigquery` with following name
 
 ```
