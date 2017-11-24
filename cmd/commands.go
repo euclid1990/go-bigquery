@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"github.com/codegangsta/cli"
 	"github.com/euclid1990/go-bigquery/configs"
+	s "github.com/euclid1990/go-bigquery/schemas"
 	"github.com/euclid1990/go-bigquery/utilities"
+	"golang.org/x/net/context"
+	"os"
 )
 
 // List of options
@@ -16,6 +19,12 @@ var Flags = []cli.Flag{
 	},
 }
 
+// Instance of Google BigQuery
+var (
+	bigquery *utilities.BigQuery
+	ctx      = context.Background()
+)
+
 // Action defines the main action for application
 func Action(c *cli.Context) {
 	exec := c.String("exec")
@@ -26,5 +35,13 @@ func Action(c *cli.Context) {
 		fmt.Printf("Run [All] command.\n")
 	case configs.ACTION_INIT:
 		fmt.Printf("Run [Init] command.\n")
+		bigquery := utilities.NewBigQuery(ctx)
+		datasetId := os.Getenv("DATASET_ID")
+		bigquery.CreateDataset(ctx, datasetId)
+		bigquery.CreateTable(ctx, datasetId, s.TABLE_USER, s.User{})
+		bigquery.CreateTable(ctx, datasetId, s.TABLE_ACCESS, s.Access{})
+	case configs.ACTION_FAKE:
+		fmt.Printf("Run [Fake] command.\n")
+		utilities.GenrateDummyData(configs.DATA_TYPE_JSON)
 	}
 }

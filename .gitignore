@@ -1,2 +1,4 @@
 .DS_Store
 /vendor
+.env
+google_application_credentials.json
