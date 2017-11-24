@@ -59,15 +59,17 @@ func (b *BigQuery) CreateTable(ctx context.Context, datasetId string, tableId st
 	return nil
 }
 
-func (b *BigQuery) InsertDataFromCsvFile(ctx context.Context, datasetId, tableId, filename string) error {
+func (b *BigQuery) InsertDataFromFile(ctx context.Context, datasetId, tableId, filename string) error {
 	f, err := os.Open(filename)
 	if err != nil {
 		return err
 	}
 	source := bigquery.NewReaderSource(f)
-	source.AllowJaggedRows = true
-	// Skip header of CSV
-	source.SkipLeadingRows = 1
+	// Config CSV options
+	// source.AllowJaggedRows = true
+	// source.SkipLeadingRows = 1
+	// Using json format: bigquery.JSON/bigquery.CSV
+	source.SourceFormat = bigquery.JSON
 
 	loader := b.Client.Dataset(datasetId).Table(tableId).LoaderFrom(source)
 	loader.CreateDisposition = bigquery.CreateNever

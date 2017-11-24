@@ -7,22 +7,30 @@ import (
 	"github.com/euclid1990/go-bigquery/configs"
 	s "github.com/euclid1990/go-bigquery/schemas"
 	"github.com/icrowley/fake"
+	"os"
+	"strconv"
 	"time"
 )
 
 const (
-	TOTAL_USER              = 10
 	PERIOD_USER_CREATED_AT  = 3
-	TOTAL_ACCESS            = 100
 	FROM_ACCESS_MONTH_AGO   = 2
 	GENERATE_ACCESS_TIMEOUT = 100
 )
 
 var (
 	UserAccessLog = make(map[int][]int64)
+	TOTAL_USER    = 0
+	TOTAL_ACCESS  = 0
 )
 
+func InitTotalRecord() {
+	TOTAL_USER, _ = strconv.Atoi(os.Getenv("TOTAL_USER_RECORD"))
+	TOTAL_ACCESS, _ = strconv.Atoi(os.Getenv("TOTAL_ACCESS_RECORD"))
+}
+
 func GenrateDummyData(filetype string) {
+	InitTotalRecord()
 	// Generate user data
 	userData := GenerateUser(TOTAL_USER)
 	userFile := fmt.Sprintf(configs.DATA_FORMAT_FILE_NAME, configs.DATA_INPUT_PATH+configs.DATA_INPUT_USER, filetype)
