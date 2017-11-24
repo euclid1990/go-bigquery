@@ -39,6 +39,9 @@ func Action(c *cli.Context) {
 		datasetId := os.Getenv("DATASET_ID")
 		bigquery.CreateDataset(ctx, datasetId)
 		bigquery.CreateTable(ctx, datasetId, s.TABLE_USER, s.User{})
+		userJsonFilePath := fmt.Sprintf(configs.DATA_FORMAT_FILE_NAME, configs.DATA_INPUT_PATH+configs.DATA_INPUT_USER, configs.DATA_TYPE_JSON)
+		bigquery.InsertDataFromFile(ctx, datasetId, s.TABLE_USER, userJsonFilePath)
+		accessJsonFilePath := fmt.Sprintf(configs.DATA_FORMAT_FILE_NAME, configs.DATA_INPUT_PATH+configs.DATA_INPUT_ACCESSS, configs.DATA_TYPE_JSON)
 		bigquery.CreateTable(ctx, datasetId, s.TABLE_ACCESS, s.Access{})
 	case configs.ACTION_FAKE:
 		fmt.Printf("Run [Fake] command.\n")

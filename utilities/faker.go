@@ -53,7 +53,7 @@ func GenerateUser(total int) []*s.User {
 			Email:     faker.Internet().Email(),
 			Gender:    fake.Gender(),
 			Address:   s.UserAddress{Status: "current", City: faker.Address().City(), Country: faker.Address().Country()},
-			CreatedAt: s.DateTime{RandomDateTimeBetween(startCreatedAt, endCreatedAt)},
+			CreatedAt: s.DateTime{RandomDateTimeBetween(startCreatedAt, endCreatedAt)}.ToString(),
 		}
 	}
 	return user
@@ -66,11 +66,11 @@ func GenerateAccess(total int) []*s.Access {
 	startCreatedAt := now.AddDate(0, -1*FROM_ACCESS_MONTH_AGO, 0)
 	for i := 0; i < total; i++ {
 		userId := Random(0, TOTAL_USER)
-		accessedAt := createUniqueAccessByUser(&userId, startCreatedAt, now)
+		accessAt := createUniqueAccessByUser(&userId, startCreatedAt, now)
 		access[i] = &s.Access{
-			Id:         i,
-			UserId:     userId,
-			AccessedAt: accessedAt,
+			Id:       i,
+			UserId:   userId,
+			AccessAt: accessAt.ToString(),
 		}
 	}
 	return access
@@ -85,10 +85,10 @@ func createUniqueAccessArray(userId *int) {
 
 func createUniqueAccessByUser(userId *int, start, end time.Time) s.DateTime {
 	createUniqueAccessArray(userId)
-	totalRandomAccessedAt := int(end.Sub(start) / time.Second)
+	totalRandomAccessAt := int(end.Sub(start) / time.Second)
 	startAt := time.Now()
 	for {
-		if len(UserAccessLog[*userId]) == totalRandomAccessedAt {
+		if len(UserAccessLog[*userId]) == totalRandomAccessAt {
 			*userId = Random(0, TOTAL_USER)
 			createUniqueAccessArray(userId)
 		}

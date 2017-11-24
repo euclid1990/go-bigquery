@@ -30,12 +30,13 @@ func (b *BigQuery) CreateDataset(ctx context.Context, datasetId string) error {
 				Logf(configs.LOG_ERROR, "Failed to create dataset: %v", err)
 				return err
 			}
-			Log(configs.LOG_INFO, "Dataset client created")
+			Logf(configs.LOG_INFO, "Dataset client: '%s' created", datasetId)
 			return nil
 		} else {
 			Logf(configs.LOG_ERROR, "Failed to fetch metadata: %v", err)
 		}
 	}
+	Logf(configs.LOG_INFO, "Dataset: '%s' has already existed", datasetId)
 	return nil
 }
 
@@ -47,9 +48,44 @@ func (b *BigQuery) CreateTable(ctx context.Context, datasetId string, tableId st
 	}
 	table := b.Client.Dataset(datasetId).Table(tableId)
 	if err := table.Create(ctx, &bigquery.TableMetadata{Schema: schema}); err != nil {
+		if err.(*googleapi.Error).Code == 409 {
+			Logf(configs.LOG_INFO, "Table: '%s' has already existed", tableId)
+			return nil
+		}
 		Logf(configs.LOG_ERROR, "Failed to create table %s: %v", tableId, err)
 		return err
 	}
-	Logf(configs.LOG_INFO, "Dataset: %s - Table: %s is created", datasetId, tableId)
+	Logf(configs.LOG_INFO, "Table: '%s' created", tableId)
+	return nil
+}
+
+func (b *BigQuery) InsertDataFromCsvFile(ctx context.Context, datasetId, tableId, filename string) error {
+	f, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	source := bigquery.NewReaderSource(f)
+	source.AllowJaggedRows = true
+	// Skip header of CSV
+	source.SkipLeadingRows = 1
+
+	loader := b.Client.Dataset(datasetId).Table(tableId).LoaderFrom(source)
+	loader.CreateDisposition = bigquery.CreateNever
+
+	job, err := loader.Run(ctx)
+	if err != nil {
+		Logf(configs.LOG_ERROR, "Failed to create job of table '%s': %v", tableId, err)
+		return err
+	}
+	status, err := job.Wait(ctx)
+	if err != nil {
+		Logf(configs.LOG_ERROR, "Failed to get job status of table '%s': %v", tableId, err)
+		return err
+	}
+	if err := status.Err(); err != nil {
+		Logf(configs.LOG_ERROR, "Failed to inserted data into table '%s': %v", tableId, err)
+		return err
+	}
+	Logf(configs.LOG_INFO, "Inserted data into table: '%s'", tableId)
 	return nil
 }

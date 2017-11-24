@@ -7,9 +7,9 @@ import (
 )
 
 type UserAddress struct {
-	Status  string `json:"current" csv:"current"`
-	City    string `json:"city" csv:"city"`
-	Country string `json:"country" csv:"country"`
+	Status  string `json:"current" csv:"current" bigquery:"current"`
+	City    string `json:"city" csv:"city" bigquery:"city"`
+	Country string `json:"country" csv:"country" bigquery:"country"`
 }
 
 // Convert the a nested and repeated field UserAddress as CSV string
