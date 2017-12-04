@@ -6,6 +6,7 @@ import (
 	"github.com/euclid1990/go-bigquery/configs"
 	s "github.com/euclid1990/go-bigquery/schemas"
 	"github.com/euclid1990/go-bigquery/utilities"
+	"github.com/euclid1990/go-bigquery/web"
 	"golang.org/x/net/context"
 	"os"
 	"time"
@@ -90,6 +91,9 @@ func Action(c *cli.Context) {
 			FROM %s%s%s.%s.%s
 			WHERE id >= 90
 		`, backtick, projectID, backtick, datasetId, tableId), time.Time{})
+
+	case "web":
+		web.Init()
 
 	case configs.ACTION_FAKE:
 		fmt.Printf("Run [Fake] command.\n")

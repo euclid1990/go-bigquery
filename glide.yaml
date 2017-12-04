@@ -16,3 +16,6 @@ import:
 - package: github.com/icrowley/fake
 - package: github.com/corpix/uarand
 - package: github.com/dmgk/faker
+- package: github.com/kataras/iris
+  version: v8.5.7
+- package: github.com/hashicorp/go-version

@@ -1,5 +1,5 @@
-hash: ccb8b911035f965b280dc83300e8ea65bfd983f8f6f51f27e31552e5d44655cc
-updated: 2017-11-24T10:57:24.726249646+07:00
+hash: 96a874e5093a8991d31f9733b92b3cad56037992d14581080468cf567dc2942e
+updated: 2017-12-04T14:48:24.461667563+07:00
 imports:
 - name: cloud.google.com/go
   version: 2d3a6656c17a60b0815b7e06ab0be04eacb6e613
@@ -12,12 +12,30 @@ imports:
   - internal/fields
   - internal/optional
   - internal/version
+- name: github.com/aymerick/raymond
+  version: 72acac2207479d21dd45898c2a4264246c818148
+  subpackages:
+  - ast
+  - lexer
+  - parser
+- name: github.com/BurntSushi/toml
+  version: a368813c5e648fee92e5f6c30e3944ff9d5e8895
 - name: github.com/codegangsta/cli
   version: cfb38830724cc34fedffe9a2a29fb54fa9169cd1
 - name: github.com/corpix/uarand
   version: 2b8494104d86337cdd41d0a49cbed8e4583c0ab4
 - name: github.com/dmgk/faker
   version: 63f4c0652a245567b56af4df496c39e517269004
+  subpackages:
+  - locales
+- name: github.com/eknkc/amber
+  version: cdade1c073850f4ffc70a829e31235ea6892853b
+  subpackages:
+  - parser
+- name: github.com/fatih/structs
+  version: f5faa72e73092639913f5833b75e1ac1d6bc7a63
+- name: github.com/flosch/pongo2
+  version: 1f4be1efe3b3529b7e58861f75d70120a9567dc4
 - name: github.com/gocarina/gocsv
   version: 7099e67763c29f812fa2ed7083f32e38be60125a
 - name: github.com/golang/protobuf
@@ -30,17 +48,103 @@ imports:
   - ptypes/timestamp
 - name: github.com/googleapis/gax-go
   version: 317e0006254c44a0ac427cc52a0e083ff0b9622f
+- name: github.com/hashicorp/go-version
+  version: 4fe82ae3040f80a03d04d2cccb5606a626b8e1ee
 - name: github.com/icrowley/fake
   version: e64cc2cf92049a299f359734c6ea76073f2a8b2c
+- name: github.com/iris-contrib/formBinder
+  version: ad9fb86c356f971f30319c40ddbdcf72129a2791
 - name: github.com/joho/godotenv
   version: a79fa1e548e2c689c241d10173efd51e5d689d5b
   subpackages:
   - cmd/godotenv
+- name: github.com/Joker/jade
+  version: 35b3f5bdbcc920cd31f4870536dbc63be8530541
+- name: github.com/json-iterator/go
+  version: 051434fab7e041ee2834e049ceae37492fc0412c
+- name: github.com/juju/errors
+  version: c7d06af17c68cd34c835053720b21f6549d9b0ee
+- name: github.com/kataras/golog
+  version: 2ed680e7b1f34147164fa8073373e14fce02ac30
+- name: github.com/kataras/iris
+  version: aab34a3e9d37f8b9fed4124f755a1b89a6f88c8a
+  subpackages:
+  - cache
+  - cache/cfg
+  - cache/client
+  - cache/client/rule
+  - cache/entry
+  - cache/ruleset
+  - cache/uri
+  - context
+  - core/errors
+  - core/handlerconv
+  - core/host
+  - core/maintenance
+  - core/maintenance/client
+  - core/maintenance/encoding
+  - core/maintenance/version
+  - core/memstore
+  - core/netutil
+  - core/router
+  - core/router/macro
+  - core/router/macro/interpreter/ast
+  - core/router/macro/interpreter/lexer
+  - core/router/macro/interpreter/parser
+  - core/router/macro/interpreter/token
+  - core/router/node
+  - middleware/logger
+  - middleware/recover
+  - mvc
+  - mvc/activator
+  - mvc/activator/field
+  - mvc/activator/methodfunc
+  - mvc/activator/model
+  - mvc/activator/persistence
+  - sessions
+  - view
+- name: github.com/kataras/pio
+  version: 825e39f34365e7db2c9fbc3692c16220e3bd7418
+  subpackages:
+  - terminal
+- name: github.com/kataras/survey
+  version: 00934ae069eda15df26fa427ac393e67e239380c
+  subpackages:
+  - core
+  - terminal
+- name: github.com/klauspost/compress
+  version: ea08389e0dc46025380296f7dd04ab0e8de36adb
+  subpackages:
+  - flate
+  - gzip
+- name: github.com/klauspost/cpuid
+  version: eae9b3e628d72774e13bdf024e78c0802f85a5b9
+- name: github.com/mattn/go-colorable
+  version: 6fcc0c1fd9b620311d821b106a400b35dc95c497
+- name: github.com/mattn/go-isatty
+  version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
+- name: github.com/mgutz/ansi
+  version: 9520e82c474b0a04dd04f8a40959027271bab992
+- name: github.com/microcosm-cc/bluemonday
+  version: 68fecaef60268522d2ac3f0123cec9d3bcab7b6e
+- name: github.com/russross/blackfriday
+  version: 6d1ef893fcb01b4f50cb6e57ed7df3e2e627b6b2
+- name: github.com/ryanuber/columnize
+  version: abc90934186a77966e2beeac62ed966aac0561d5
+- name: github.com/satori/go.uuid
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
+- name: golang.org/x/crypto
+  version: 94eea52f7b742c7cbe0b03b22f0c4c8631ece122
+  subpackages:
+  - acme
+  - acme/autocert
 - name: golang.org/x/net
   version: 9dfe39835686865bff950a07b394c12a98ddc811
   subpackages:
   - context
   - context/ctxhttp
+  - html
+  - html/atom
   - http2
   - http2/hpack
   - idna
@@ -54,6 +158,10 @@ imports:
   - internal
   - jws
   - jwt
+- name: golang.org/x/sys
+  version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
+  subpackages:
+  - unix
 - name: golang.org/x/text
   version: 88f656faf3f37f690df1a32515b479415e1a6769
   subpackages:
@@ -112,4 +220,6 @@ imports:
   - status
   - tap
   - transport
+- name: gopkg.in/yaml.v2
+  version: 287cf08546ab5e7e37d55a84f7ed3fd1db036de5
 testImports: []
