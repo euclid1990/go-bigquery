@@ -45,6 +45,34 @@ $(function () {
     };
 
     var timer = accuracy();
+    var isLoading = false;
     timer.init("#timer");
-    timer.start();
+
+    function axiosDone(selector) {
+        selector.removeClass("disabled");
+        isLoading = false;
+        timer.stop();
+    }
+
+    /* Fake Data / Seed Table / Drop Table: Action */
+    $(".btn-init-data").click(function() {
+        if (isLoading) {
+            return false;
+        }
+        $(this).addClass("disabled");
+        $(".msg").text(null);
+        isLoading = true;
+        selector = $(this);
+        url = selector.data("path");
+        timer.start();
+        axios.post(url, null)
+            .then(function (response) {
+                $(".msg").text(response.data.msg);
+                axiosDone(selector);
+            })
+            .catch(function (error) {
+                $(".msg").text(error);
+                axiosDone(selector);
+            });
+    })
 });

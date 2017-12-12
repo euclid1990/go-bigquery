@@ -1,5 +1,5 @@
-hash: 96a874e5093a8991d31f9733b92b3cad56037992d14581080468cf567dc2942e
-updated: 2017-12-04T14:48:24.461667563+07:00
+hash: 32ec88ba6bc4c9f6c34fde1620aa325f1693770aab5697acccea1d43d17c06ee
+updated: 2017-12-12T11:43:21.392211777+07:00
 imports:
 - name: cloud.google.com/go
   version: 2d3a6656c17a60b0815b7e06ab0be04eacb6e613
@@ -28,6 +28,8 @@ imports:
   version: 63f4c0652a245567b56af4df496c39e517269004
   subpackages:
   - locales
+- name: github.com/dustin/go-humanize
+  version: bb3d318650d48840a39aa21a027c6630e198e626
 - name: github.com/eknkc/amber
   version: cdade1c073850f4ffc70a829e31235ea6892853b
   subpackages:
@@ -61,7 +63,7 @@ imports:
 - name: github.com/Joker/jade
   version: 35b3f5bdbcc920cd31f4870536dbc63be8530541
 - name: github.com/json-iterator/go
-  version: 051434fab7e041ee2834e049ceae37492fc0412c
+  version: d2a7335211d09cd625d205dcb68695ed7079b926
 - name: github.com/juju/errors
   version: c7d06af17c68cd34c835053720b21f6549d9b0ee
 - name: github.com/kataras/golog
@@ -159,7 +161,7 @@ imports:
   - jws
   - jwt
 - name: golang.org/x/sys
-  version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
+  version: 53aa286056ef226755cd898109dbcdaba8ac0b81
   subpackages:
   - unix
 - name: golang.org/x/text

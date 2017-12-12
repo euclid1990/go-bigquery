@@ -29,7 +29,7 @@ func InitTotalRecord() {
 	TOTAL_ACCESS, _ = strconv.Atoi(os.Getenv("TOTAL_ACCESS_RECORD"))
 }
 
-func GenrateDummyData(filetype string) {
+func GenrateDummyData(filetype string) int64 {
 	InitTotalRecord()
 	// Generate user data
 	userData := GenerateUser(TOTAL_USER)
@@ -45,6 +45,7 @@ func GenrateDummyData(filetype string) {
 		WriteJson(userFile, userData)
 		WriteJson(accessFile, accessData)
 	}
+	return int64(TOTAL_USER + TOTAL_ACCESS)
 }
 
 func GenerateUser(total int) []*s.User {

@@ -19,3 +19,4 @@ import:
 - package: github.com/kataras/iris
   version: v8.5.7
 - package: github.com/hashicorp/go-version
+- package: github.com/dustin/go-humanize

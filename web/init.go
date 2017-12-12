@@ -29,5 +29,8 @@ func Init() {
 	app.Favicon("./web/assets/images/favicon.png")
 	app.StaticWeb("/static", "./web/assets")
 
-	app.Run(iris.Addr(port), iris.WithoutVersionChecker)
+	app.Run(iris.Addr(port),
+		iris.WithoutVersionChecker,
+		iris.WithOptimizations,
+	)
 }

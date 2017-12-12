@@ -7,6 +7,7 @@ import (
 	"github.com/gocarina/gocsv"
 	"github.com/joho/godotenv"
 	"os"
+	"path/filepath"
 	"reflect"
 	"time"
 )
@@ -84,4 +85,21 @@ func WriteJson(file string, data interface{}) (bool, error) {
 	}
 
 	return true, nil
+}
+
+// Get directory total size (MB)
+func DirSize(path string) (float64, error) {
+	var size int64
+	err := filepath.Walk(path, func(_ string, info os.FileInfo, err error) error {
+		if !info.IsDir() {
+			size += info.Size()
+		}
+		return err
+	})
+	// Ignore errors
+	if err != nil {
+		return 0, err
+	}
+	sizeMB := float64(size) / 1024.0 / 1024.0
+	return sizeMB, err
 }
