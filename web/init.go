@@ -25,7 +25,8 @@ func Init() {
 	// Define routing
 	app.Controller("/", new(controllers.AppController))
 
-	// Static files serve
+	// Favicon & Static files serve
+	app.Favicon("./web/assets/images/favicon.png")
 	app.StaticWeb("/static", "./web/assets")
 
 	app.Run(iris.Addr(port), iris.WithoutVersionChecker)
