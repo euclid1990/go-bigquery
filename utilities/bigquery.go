@@ -53,7 +53,7 @@ func (b *BigQuery) CreateTable(ctx context.Context, datasetId string, tableId st
 	if err := table.Create(ctx, &bigquery.TableMetadata{Schema: schema}); err != nil {
 		if err.(*googleapi.Error).Code == 409 {
 			Logf(configs.LOG_INFO, "Table: '%s' has already existed", tableId)
-			return nil
+			return err
 		}
 		Logf(configs.LOG_ERROR, "Failed to create table %s: %v", tableId, err)
 		return err
@@ -177,11 +177,17 @@ func (b *BigQuery) InsertRow(ctx context.Context, datasetId, tableId string, dat
 	return nil
 }
 
-func (b *BigQuery) Query(ctx context.Context, datasetId, tableId string, sqlQuery string) ([]interface{}, error) {
+func (b *BigQuery) Query(ctx context.Context, datasetId, sqlQuery string) ([]interface{}, error) {
+	start := time.Now()
 	q := b.Client.Query(sqlQuery)
+	// Use standard SQL syntax for queries.
+	// See: https://cloud.google.com/bigquery/sql-reference/
+	q.QueryConfig.UseStandardSQL = true
+	q.Dst = nil
+
 	it, err := q.Read(ctx)
 	if err != nil {
-		Logf(configs.LOG_ERROR, "Failed to query table '%s': %v", tableId, err)
+		Logf(configs.LOG_ERROR, "Failed to query ----------\n%s\n----------%v", sqlQuery, err)
 		return nil, err
 	}
 	result := make([]interface{}, 0)
@@ -192,11 +198,11 @@ func (b *BigQuery) Query(ctx context.Context, datasetId, tableId string, sqlQuer
 			break
 		}
 		if err != nil {
-			Logf(configs.LOG_ERROR, "Failed to map result data from table '%s': %v", tableId, err)
+			Logf(configs.LOG_ERROR, "Failed to map result data from query ----------\n%s\n----------%v", sqlQuery, err)
 			return nil, err
 		}
 		result = append(result, row)
 	}
-	Logf(configs.LOG_INFO, "Get total %v records from table '%s', Query took", len(result), tableId)
+	Logf(configs.LOG_INFO, "Get total %v records, Query took %.3f s", len(result), TimeTrack(start))
 	return result, nil
 }

@@ -1,6 +1,7 @@
 package schemas
 
 import (
+	"cloud.google.com/go/civil"
 	"time"
 )
 
@@ -25,4 +26,9 @@ func (date *DateTime) UnmarshalCSV(csv string) (err error) {
 // Convert Datetime struct to string
 func (date DateTime) ToString() string {
 	return date.Time.Format("2006-01-02 15:04:05")
+}
+
+// Convert Datetime struct to civil.Datetime
+func (date DateTime) ToCivil() civil.DateTime {
+	return civil.DateTimeOf(date.Time)
 }

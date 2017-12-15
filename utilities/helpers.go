@@ -103,3 +103,8 @@ func DirSize(path string) (float64, error) {
 	sizeMB := float64(size) / 1024.0 / 1024.0
 	return sizeMB, err
 }
+
+func TimeTrack(start time.Time) float64 {
+	elapsed := time.Since(start)
+	return float64(elapsed) / float64(time.Second)
+}

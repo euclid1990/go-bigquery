@@ -13,15 +13,17 @@ import (
 )
 
 const (
-	PERIOD_USER_CREATED_AT  = 3
-	FROM_ACCESS_MONTH_AGO   = 2
+	PERIOD_USER_CREATED_AT  = 13
+	FROM_ACCESS_MONTH_AGO   = 12
 	GENERATE_ACCESS_TIMEOUT = 100
 )
 
 var (
 	UserAccessLog = make(map[int][]int64)
+	CountryLog    = make(map[string]bool)
 	TOTAL_USER    = 0
 	TOTAL_ACCESS  = 0
+	TOTAL_COUNTRY = 20
 )
 
 func InitTotalRecord() {
@@ -51,18 +53,30 @@ func GenrateDummyData(filetype string) int64 {
 func GenerateUser(total int) []*s.User {
 	user := make([]*s.User, total)
 	now := time.Now()
-	// Subtract 2~3 Month to current datetime
-	endCreatedAt := now.AddDate(0, -1*(PERIOD_USER_CREATED_AT-1), 0)
+	// Subtract PERIOD_USER_CREATED_AT months to current datetime
 	startCreatedAt := now.AddDate(0, -1*PERIOD_USER_CREATED_AT, 0)
+	endCreatedAt := now.AddDate(0, 0, -1)
+	uniqueCountries := make([]string, 0)
 	for i := 0; i < total; i++ {
+		country := fake.Country()
+		if len(uniqueCountries) < TOTAL_COUNTRY {
+			_, ok := CountryLog[country]
+			if !ok {
+				uniqueCountries = append(uniqueCountries, country)
+			}
+			CountryLog[country] = true
+		} else {
+			n := Random(0, TOTAL_COUNTRY-1)
+			country = uniqueCountries[n]
+		}
 		user[i] = &s.User{
 			Id:        i,
 			Name:      faker.Name().Name(),
 			Age:       Random(15, 50),
 			Email:     faker.Internet().Email(),
 			Gender:    fake.Gender(),
-			Address:   s.UserAddress{Status: "current", City: faker.Address().City(), Country: faker.Address().Country()},
-			CreatedAt: s.DateTime{RandomDateTimeBetween(startCreatedAt, endCreatedAt)}.ToString(),
+			Address:   s.UserAddress{Status: "current", City: faker.Address().City(), Country: country},
+			CreatedAt: s.DateTime{RandomDateTimeBetween(startCreatedAt, endCreatedAt)}.ToCivil(),
 		}
 	}
 	return user
@@ -79,7 +93,7 @@ func GenerateAccess(total int) []*s.Access {
 		access[i] = &s.Access{
 			Id:       i,
 			UserId:   userId,
-			AccessAt: accessAt.ToString(),
+			AccessAt: accessAt.ToCivil(),
 		}
 	}
 	return access

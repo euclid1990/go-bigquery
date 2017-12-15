@@ -1,27 +1,11 @@
 $(function () {
-    // var myChart = Highcharts.chart('container', {
-    //     chart: {
-    //         type: 'bar'
-    //     },
-    //     title: {
-    //         text: 'Fruit Consumption'
-    //     },
-    //     xAxis: {
-    //         categories: ['Apples', 'Bananas', 'Oranges']
-    //     },
-    //     yAxis: {
-    //         title: {
-    //             text: 'Fruit eaten'
-    //         }
-    //     },
-    //     series: [{
-    //         name: 'Jane',
-    //         data: [1, 0, 4]
-    //     }, {
-    //         name: 'John',
-    //         data: [5, 7, 3]
-    //     }]
-    // });
+
+    /**
+     * Check a selector exist or not
+     */
+    $.fn.exists = function () {
+        return this.length !== 0;
+    }
 
     function accuracy() {
         return {
@@ -75,4 +59,128 @@ $(function () {
                 axiosDone(selector);
             });
     })
+
+    Highcharts.setOptions({
+        lang: {
+            thousandsSep: ','
+        }
+    })
+
+    if ($('#user-container').exists()) {
+        var userChart = Highcharts.chart('user-container', {
+            chart: {
+                type: 'column'
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: 'New users by month'
+            },
+            xAxis: {
+                title: {
+                    text: null
+                },
+                categories: newUserByMonth.xCategories
+            },
+            yAxis: {
+                title: {
+                    text: 'Users'
+                }
+            },
+            series: [{
+                showInLegend: false,
+                name: 'Users',
+                data: newUserByMonth.series
+            }]
+        });
+    }
+
+    if ($('#access-container').exists()) {
+        var accessChart = Highcharts.chart('access-container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: 'Total access by country'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Access',
+                colorByPoint: true,
+                data: accessByCountry.series
+            }]
+        });
+    }
+
+    if ($('#retention-container').exists()) {
+        var accessChart = Highcharts.chart('retention-container', {
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: 'Retention rate'
+            },
+            xAxis: {
+                categories: retention.xCategories
+            },
+            yAxis: {
+                title: {
+                    text: 'Number service access users'
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: [{
+                type: 'column',
+                name: 'Past 30 days',
+                data: retention.series.past30days
+            }, {
+                type: 'column',
+                name: 'Comeback on this day',
+                data: retention.series.days
+            },
+            {
+                type: 'spline',
+                name: 'Retention rate',
+                data: retention.series.rate,
+                tooltip: {
+                    pointFormat: "<span style=\"color:{series.color}\">\u25CF</span> Retention rate: {point.y:,.1f}%"
+                },
+                marker: {
+                    lineWidth: 2,
+                    lineColor: Highcharts.getOptions().colors[3],
+                    fillColor: 'white'
+                }
+            }]
+        });
+    }
+
 });
